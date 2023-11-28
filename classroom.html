@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Обновленные стили для парт */
+        .desk {
+            width: 100px;
+            height: 50px;
+            border: 1px solid #000;
+            margin: 5px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .student {
+            width: 100%;
+            height: 48%;
+            background-color: #ddd;
+        }
+
+        .student-name {
+    width: 50%;
+    text-align: center;
+    position: absolute;
+    cursor: pointer;
+}
+
+.top-name {
+    top: 50%;
+    transform: translateY(-100%);
+}
+
+.bottom-name {
+    bottom: 50%;
+    transform: translateY(50%);
+}
+
+
+        /* Обновленные стили для контейнера с партами в левом ряду */
+        .left-container {
+            float: left;
+            text-align: left;
+        }
+
+        /* Обновленные стили для контейнера с партами в правом ряду */
+        .right-container {
+            float: right;
+            text-align: right;
+        }
+
+        /* Стили для кнопки возврата на главную страницу */
+        #backButton {
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+    <title>Парты</title>
+</head>
+<body>
+
+    <button id="backButton" onclick="goBack()">Вернуться на главную</button>
+
+    <!-- Выпадающий список для первого ряда -->
+    <label for="row1">Количество парт в первом ряду:</label>
+    <select id="row1" class="dropdown" onchange="createDesks('row1', 'gridContainer1')">
+        <!-- Опции от 1 до 10 -->
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7" selected>7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+    </select>
+
+    <!-- Контейнер для первого ряда парт -->
+    <div id="gridContainer1" class="grid-container left-container">
+        <!-- Здесь будут добавляться парты динамически -->
+    </div>
+
+    <!-- Выпадающий список для второго ряда -->
+    <label for="row2">Количество парт во втором ряду:</label>
+    <select id="row2" class="dropdown" onchange="createDesks('row2', 'gridContainer2')">
+        <!-- Опции от 1 до 10 -->
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6" selected>6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+    </select>
+
+    <!-- Контейнер для второго ряда парт -->
+    <div id="gridContainer2" class="grid-container right-container">
+        <!-- Здесь будут добавляться парты динамически -->
+    </div>
+
+    <script>
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        function createDesks(rowId, containerId) {
+            const selectedValue = document.getElementById(rowId).value;
+            const gridContainer = document.getElementById(containerId);
+            gridContainer.innerHTML = '';
+
+            for (let i = 0; i < selectedValue; i++) {
+                const desk = document.createElement('div');
+                desk.classList.add('desk');
+
+                const student1 = document.createElement('div');
+                student1.classList.add('student');
+
+                const student2 = document.createElement('div');
+                student2.classList.add('student');
+
+                const studentName1 = document.createElement('div');
+                studentName1.classList.add('student-name', 'top-name');
+                studentName1.textContent = `Имя${i * 2 + 1}`;
+                studentName1.onclick = () => changeStudentName(studentName1);
+
+                const studentName2 = document.createElement('div');
+                studentName2.classList.add('student-name', 'bottom-name');
+                studentName2.textContent = `Имя${i * 2 + 2}`;
+                studentName2.style.left = '50%';
+                studentName2.onclick = () => changeStudentName(studentName2);
+
+                desk.appendChild(student1);
+                desk.appendChild(student2);
+                desk.appendChild(studentName1);
+                desk.appendChild(studentName2);
+
+                gridContainer.appendChild(desk);
+            }
+        }
+
+        function changeStudentName(clickedElement) {
+            const currentName = clickedElement.textContent;
+            clickedElement.textContent = '';
+            const inputElement = document.createElement('input');
+            inputElement.type = 'text';
+            inputElement.value = currentName;
+            inputElement.addEventListener('blur', () => {
+                clickedElement.textContent = inputElement.value;
+            });
+            clickedElement.appendChild(inputElement);
+            inputElement.focus();
+        }
+    </script>
+
+</body>
+</html>
